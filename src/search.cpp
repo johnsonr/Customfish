@@ -35,6 +35,8 @@
 #include "uci.h"
 #include "syzygy/tbprobe.h"
 
+extern Value PieceValue[PHASE_NB][PIECE_NB];
+
 namespace Search {
 
   LimitsType Limits;

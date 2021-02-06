@@ -32,6 +32,8 @@
 #include "uci.h"
 #include "syzygy/tbprobe.h"
 
+extern Value PieceValue[PHASE_NB][PIECE_NB];
+
 using std::string;
 
 namespace Zobrist {
@@ -348,9 +350,10 @@ void Position::set_state(StateInfo* si) const {
       Piece pc = piece_on(s);
       si->key ^= Zobrist::psq[pc][s];
 
+      //std::cout << "PieceValue[WQ]=" << PieceValue[MG][W_QUEEN] << "\n";
+
       if (type_of(pc) == PAWN)
           si->pawnKey ^= Zobrist::psq[pc][s];
-
       else if (type_of(pc) != KING)
           si->nonPawnMaterial[color_of(pc)] += PieceValue[MG][pc];
   }

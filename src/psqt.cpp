@@ -24,6 +24,7 @@
 #include "bitboard.h"
 #include "types.h"
 
+extern Value PieceValue[PHASE_NB][PIECE_NB];
 
 namespace
 {

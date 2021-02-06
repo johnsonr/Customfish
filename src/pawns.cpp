@@ -24,6 +24,8 @@
 #include "position.h"
 #include "thread.h"
 
+extern Value PieceValue[PHASE_NB][PIECE_NB];
+
 namespace {
 
   #define V Value
