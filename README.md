@@ -16,134 +16,156 @@ updatable neural networks. The classical evaluation runs efficiently on almost a
 CPU architectures, while the NNUE evaluation benefits from the vector
 intrinsics available on most CPUs (sse2, avx2, neon, or similar).
 
-
 ## Files
 
 This distribution of Stockfish consists of the following files:
 
-  * Readme.md, the file you are currently reading.
+- Readme.md, the file you are currently reading.
 
-  * Copying.txt, a text file containing the GNU General Public License version 3.
+- Copying.txt, a text file containing the GNU General Public License version 3.
 
-  * src, a subdirectory containing the full source code, including a Makefile
-    that can be used to compile Stockfish on Unix-like systems.
+- src, a subdirectory containing the full source code, including a Makefile
+  that can be used to compile Stockfish on Unix-like systems.
 
-  * a file with the .nnue extension, storing the neural network for the NNUE 
-    evaluation. Binary distributions will have this file embedded.
+- a file with the .nnue extension, storing the neural network for the NNUE
+  evaluation. Binary distributions will have this file embedded.
 
 Note: to use the NNUE evaluation, the additional data file with neural network parameters
 needs to be available. Normally, this file is already embedded in the binary or it can be downloaded.
 The filename for the default (recommended) net can be found as the default
 value of the `EvalFile` UCI option, with the format `nn-[SHA256 first 12 digits].nnue`
 (for instance, `nn-c157e0a5755b.nnue`). This file can be downloaded from
+
 ```
 https://tests.stockfishchess.org/api/nn/[filename]
 ```
-replacing `[filename]` as needed.
 
+replacing `[filename]` as needed.
 
 ## UCI options
 
 Currently, Stockfish has the following UCI options:
 
-  * #### Threads
-    The number of CPU threads used for searching a position. For best performance, set
-    this equal to the number of CPU cores available.
+- #### Threads
 
-  * #### Hash
-    The size of the hash table in MB. It is recommended to set Hash after setting Threads.
+  The number of CPU threads used for searching a position. For best performance, set
+  this equal to the number of CPU cores available.
 
-  * #### Ponder
-    Let Stockfish ponder its next move while the opponent is thinking.
+- #### Hash
 
-  * #### MultiPV
-    Output the N best lines (principal variations, PVs) when searching.
-    Leave at 1 for best performance.
+  The size of the hash table in MB. It is recommended to set Hash after setting Threads.
 
-  * #### Use NNUE
-    Toggle between the NNUE and classical evaluation functions. If set to "true",
-    the network parameters must be available to load from file (see also EvalFile),
-    if they are not embedded in the binary.
+- #### Ponder
 
-  * #### EvalFile
-    The name of the file of the NNUE evaluation parameters. Depending on the GUI the
-    filename might have to include the full path to the folder/directory that contains the file.
-    Other locations, such as the directory that contains the binary and the working directory,
-    are also searched.
+  Let Stockfish ponder its next move while the opponent is thinking.
 
-  * #### UCI_AnalyseMode
-    An option handled by your GUI.
+- #### MultiPV
 
-  * #### UCI_Chess960
-    An option handled by your GUI. If true, Stockfish will play Chess960.
+  Output the N best lines (principal variations, PVs) when searching.
+  Leave at 1 for best performance.
 
-  * #### UCI_ShowWDL
-    If enabled, show approximate WDL statistics as part of the engine output.
-    These WDL numbers model expected game outcomes for a given evaluation and
-    game ply for engine self-play at fishtest LTC conditions (60+0.6s per game).
+- #### Use NNUE
 
-  * #### UCI_LimitStrength
-    Enable weaker play aiming for an Elo rating as set by UCI_Elo. This option overrides Skill Level.
+  Toggle between the NNUE and classical evaluation functions. If set to "true",
+  the network parameters must be available to load from file (see also EvalFile),
+  if they are not embedded in the binary.
 
-  * #### UCI_Elo
-    If enabled by UCI_LimitStrength, aim for an engine strength of the given Elo.
-    This Elo rating has been calibrated at a time control of 60s+0.6s and anchored to CCRL 40/4.
+- #### EvalFile
 
-  * #### Skill Level
-    Lower the Skill Level in order to make Stockfish play weaker (see also UCI_LimitStrength).
-    Internally, MultiPV is enabled, and with a certain probability depending on the Skill Level a
-    weaker move will be played.
+  The name of the file of the NNUE evaluation parameters. Depending on the GUI the
+  filename might have to include the full path to the folder/directory that contains the file.
+  Other locations, such as the directory that contains the binary and the working directory,
+  are also searched.
 
-  * #### SyzygyPath
-    Path to the folders/directories storing the Syzygy tablebase files. Multiple
-    directories are to be separated by ";" on Windows and by ":" on Unix-based
-    operating systems. Do not use spaces around the ";" or ":".
+- #### UCI_AnalyseMode
 
-    Example: `C:\tablebases\wdl345;C:\tablebases\wdl6;D:\tablebases\dtz345;D:\tablebases\dtz6`
+  An option handled by your GUI.
 
-    It is recommended to store .rtbw files on an SSD. There is no loss in storing
-    the .rtbz files on a regular HD. It is recommended to verify all md5 checksums
-    of the downloaded tablebase files (`md5sum -c checksum.md5`) as corruption will
-    lead to engine crashes.
+- #### UCI_Chess960
 
-  * #### SyzygyProbeDepth
-    Minimum remaining search depth for which a position is probed. Set this option
-    to a higher value to probe less aggressively if you experience too much slowdown
-    (in terms of nps) due to TB probing.
+  An option handled by your GUI. If true, Stockfish will play Chess960.
 
-  * #### Syzygy50MoveRule
-    Disable to let fifty-move rule draws detected by Syzygy tablebase probes count
-    as wins or losses. This is useful for ICCF correspondence games.
+- #### UCI_ShowWDL
 
-  * #### SyzygyProbeLimit
-    Limit Syzygy tablebase probing to positions with at most this many pieces left
-    (including kings and pawns).
+  If enabled, show approximate WDL statistics as part of the engine output.
+  These WDL numbers model expected game outcomes for a given evaluation and
+  game ply for engine self-play at fishtest LTC conditions (60+0.6s per game).
 
-  * #### Contempt
-    A positive value for contempt favors middle game positions and avoids draws,
-    effective for the classical evaluation only.
+- #### UCI_LimitStrength
 
-  * #### Analysis Contempt
-    By default, contempt is set to prefer the side to move. Set this option to "White"
-    or "Black" to analyse with contempt for that side, or "Off" to disable contempt.
+  Enable weaker play aiming for an Elo rating as set by UCI_Elo. This option overrides Skill Level.
 
-  * #### Move Overhead
-    Assume a time delay of x ms due to network and GUI overheads. This is useful to
-    avoid losses on time in those cases.
+- #### UCI_Elo
 
-  * #### Slow Mover
-    Lower values will make Stockfish take less time in games, higher values will
-    make it think longer.
+  If enabled by UCI_LimitStrength, aim for an engine strength of the given Elo.
+  This Elo rating has been calibrated at a time control of 60s+0.6s and anchored to CCRL 40/4.
 
-  * #### nodestime
-    Tells the engine to use nodes searched instead of wall time to account for
-    elapsed time. Useful for engine testing.
+- #### Skill Level
 
-  * #### Clear Hash
-    Clear the hash table.
+  Lower the Skill Level in order to make Stockfish play weaker (see also UCI_LimitStrength).
+  Internally, MultiPV is enabled, and with a certain probability depending on the Skill Level a
+  weaker move will be played.
 
-  * #### Debug Log File
-    Write all communication to and from the engine into a text file.
+- #### SyzygyPath
+
+  Path to the folders/directories storing the Syzygy tablebase files. Multiple
+  directories are to be separated by ";" on Windows and by ":" on Unix-based
+  operating systems. Do not use spaces around the ";" or ":".
+
+  Example: `C:\tablebases\wdl345;C:\tablebases\wdl6;D:\tablebases\dtz345;D:\tablebases\dtz6`
+
+  It is recommended to store .rtbw files on an SSD. There is no loss in storing
+  the .rtbz files on a regular HD. It is recommended to verify all md5 checksums
+  of the downloaded tablebase files (`md5sum -c checksum.md5`) as corruption will
+  lead to engine crashes.
+
+- #### SyzygyProbeDepth
+
+  Minimum remaining search depth for which a position is probed. Set this option
+  to a higher value to probe less aggressively if you experience too much slowdown
+  (in terms of nps) due to TB probing.
+
+- #### Syzygy50MoveRule
+
+  Disable to let fifty-move rule draws detected by Syzygy tablebase probes count
+  as wins or losses. This is useful for ICCF correspondence games.
+
+- #### SyzygyProbeLimit
+
+  Limit Syzygy tablebase probing to positions with at most this many pieces left
+  (including kings and pawns).
+
+- #### Contempt
+
+  A positive value for contempt favors middle game positions and avoids draws,
+  effective for the classical evaluation only.
+
+- #### Analysis Contempt
+
+  By default, contempt is set to prefer the side to move. Set this option to "White"
+  or "Black" to analyse with contempt for that side, or "Off" to disable contempt.
+
+- #### Move Overhead
+
+  Assume a time delay of x ms due to network and GUI overheads. This is useful to
+  avoid losses on time in those cases.
+
+- #### Slow Mover
+
+  Lower values will make Stockfish take less time in games, higher values will
+  make it think longer.
+
+- #### nodestime
+
+  Tells the engine to use nodes searched instead of wall time to account for
+  elapsed time. Useful for engine testing.
+
+- #### Clear Hash
+
+  Clear the hash table.
+
+- #### Debug Log File
+  Write all communication to and from the engine into a text file.
 
 ## A note on classical and NNUE evaluation
 
@@ -173,7 +195,7 @@ to be compatible with that binary.
 
 If the engine is searching a position that is not in the tablebases (e.g.
 a position with 8 pieces), it will access the tablebases during the search.
-If the engine reports a very large score (typically 153.xx), this means 
+If the engine reports a very large score (typically 153.xx), this means
 it has found a winning line into a tablebase position.
 
 If the engine is given a position to search that is in the tablebases, it
@@ -238,7 +260,7 @@ targets with corresponding descriptions.
 
 When not using the Makefile to compile (for instance, with Microsoft MSVC) you
 need to manually set/unset some switches in the compiler command line; see
-file *types.h* for a quick reference.
+file _types.h_ for a quick reference.
 
 When reporting an issue or a bug, please tell us which version and
 compiler you used to create your executable. These informations can
@@ -263,20 +285,19 @@ and view the current tests on [Fishtest](https://tests.stockfishchess.org/tests)
 
 If you want to help improve the code, there are several valuable resources:
 
-* [In this wiki,](https://www.chessprogramming.org) many techniques used in
-Stockfish are explained with a lot of background information.
+- [In this wiki,](https://www.chessprogramming.org) many techniques used in
+  Stockfish are explained with a lot of background information.
 
-* [The section on Stockfish](https://www.chessprogramming.org/Stockfish)
-describes many features and techniques used by Stockfish. However, it is
-generic rather than being focused on Stockfish's precise implementation.
-Nevertheless, a helpful resource.
+- [The section on Stockfish](https://www.chessprogramming.org/Stockfish)
+  describes many features and techniques used by Stockfish. However, it is
+  generic rather than being focused on Stockfish's precise implementation.
+  Nevertheless, a helpful resource.
 
-* The latest source can always be found on [GitHub](https://github.com/official-stockfish/Stockfish).
-Discussions about Stockfish take place in the [FishCooking](https://groups.google.com/forum/#!forum/fishcooking)
-group and engine testing is done on [Fishtest](https://tests.stockfishchess.org/tests).
-If you want to help improve Stockfish, please read this [guideline](https://github.com/glinscott/fishtest/wiki/Creating-my-first-test)
-first, where the basics of Stockfish development are explained.
-
+- The latest source can always be found on [GitHub](https://github.com/official-stockfish/Stockfish).
+  Discussions about Stockfish take place in the [FishCooking](https://groups.google.com/forum/#!forum/fishcooking)
+  group and engine testing is done on [Fishtest](https://tests.stockfishchess.org/tests).
+  If you want to help improve Stockfish, please read this [guideline](https://github.com/glinscott/fishtest/wiki/Creating-my-first-test)
+  first, where the basics of Stockfish development are explained.
 
 ## Terms of use
 
@@ -293,4 +314,4 @@ to where the source code can be found. If you make any changes to the
 source code, these changes must also be made available under the GPL.
 
 For full details, read the copy of the GPL v3 found in the file named
-*Copying.txt*.
+_Copying.txt_.
